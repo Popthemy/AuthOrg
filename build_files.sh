@@ -1,13 +1,14 @@
 #!/bin/bash
-
-echo "Starting build process..."
-
+# Check Python version
 python --version
+
+# Upgrade pip to the latest version
+python -m ensurepip --upgrade
+
 # Install dependencies
-python -m pip install -r requirements.txt|| { echo 'Failed to install dependencies'; exit 1; }
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
 
 # Apply migrations (if using Django)
-python manage.py migrate || { echo 'Failed to apply migrations'; exit 1; }
+python manage.py migrate
 
-
-echo "Build process completed successfully."
