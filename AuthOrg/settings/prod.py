@@ -1,6 +1,6 @@
 import os
 from .common import *
-import dj_database_url
+
 
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
@@ -14,9 +14,12 @@ ALLOWED_HOSTS = ['vercel.app',".now.sh"]
 
 # for postgres offline
 DATABASES = {
-    'default': dj_database_url.parse(
-        os.environ.get("DATABASE_URL"),
-        conn_max_age=600,
-        conn_health_checks=True,
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'defaultdb',
+        'USER': 'avnadmin',
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+        'HOST': 'pg-leegreen-horluwatemilorunolamilekan-cb73.k.aivencloud.com',
+        'PORT': '20755',
+    }
 }
