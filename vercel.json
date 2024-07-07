@@ -19,5 +19,6 @@
       "src": "/static/(.*)",
       "dest": "/static/$1"
     }
-  ]
+  ],
+  "buildCommand": "sh build_files.sh"
 }
