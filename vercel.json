@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "AuthOrg/AuthOrg/wsgi.py",
+      "src": "AuthOrg/wsgi.py",
       "use": "@vercel/python",
       "config": {
         "maxLambdaSize": "15mb",
@@ -13,12 +13,11 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "AuthOrg/AuthOrg/wsgi.py"
+      "dest": "AuthOrg/wsgi.py"
     },
     {
       "src": "/static/(.*)",
       "dest": "/static/$1"
     }
-  ],
-  "buildCommand": "sh build_files.sh"
+  ]
 }
