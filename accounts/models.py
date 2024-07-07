@@ -5,7 +5,7 @@ from .managers import CustomeBaseUserManager
 
 # Create your models here.
 class User(AbstractBaseUser):
-    user_id = models.CharField(max_length=36, unique=True, primary_key=True)
+    id = models.CharField(max_length=36, unique=True, primary_key=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
@@ -26,6 +26,4 @@ class User(AbstractBaseUser):
     def is_staff(self):
         return self.is_admin
 
-    @property
-    def id(self):
-        return self.user_id
+

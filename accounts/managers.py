@@ -1,8 +1,10 @@
 from django.contrib.auth.models import  BaseUserManager
 from django.core.exceptions import ValidationError
 from uuid import uuid4
+
+
 class CustomeBaseUserManager(BaseUserManager):
-    def create_user(self, email, first_name, last_name, phone=None,user_id=None, password=None):
+    def create_user(self, email, first_name, last_name, phone=None,id=None, password=None):
         
         if not email:
             raise ValidationError({'email': 'User must have an email address'})
@@ -15,7 +17,7 @@ class CustomeBaseUserManager(BaseUserManager):
             email = self.normalize_email(email),
             first_name = first_name,
             last_name=last_name,
-            user_id= user_id if user_id else str(uuid4()),
+            id= id if id else str(uuid4()),
             phone=phone
         )
 

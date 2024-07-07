@@ -9,6 +9,7 @@ from uuid import uuid4
 
 class UserSerializer(serializers.ModelSerializer):
 
+    user_id = serializers.CharField(max_length=36,source='id',read_only=True)
     class Meta:
         model = User
         fields = ['user_id', 'first_name', 'last_name', 'email', 'phone']
@@ -59,7 +60,7 @@ class RegisterUserSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         user = User.objects.create_user(
-            user_id=str(uuid4()), **validated_data
+            id=str(uuid4()), **validated_data
         )
         return user
 

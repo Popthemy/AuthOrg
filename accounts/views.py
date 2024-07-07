@@ -1,13 +1,16 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .serializer import UserSerializer, RegisterUserSerializer, LoginUserSerializer
 from .models import User
 
 # Create your views here.
+
+
 
 
 def get_jwt_token(user):
@@ -36,7 +39,11 @@ class RegisterUserView(APIView):
         if serializer.is_valid():
             user = serializer.save()
 
+            print(f'from register userview {user} ')
+
             refresh_token = get_jwt_token(user)
+
+            serializer = UserSerializer(User.objects.get(email=user.email))
 
             response_data = {
                 "status": "success",
@@ -68,12 +75,15 @@ class LoginUserView(APIView):
 
             refresh_token = get_jwt_token(user)
 
+            user_obj =User.objects.get(email=user.email)
+            serializer= UserSerializer(user_obj)
+
             response_data = {
                 "status": "success",
                 "message": "Login successful",
                 "data": {
                     "accessToken": str(refresh_token.access_token),
-                    "user": UserSerializer(date=user)
+                    "user": serializer.data
                 }
             }
 
@@ -85,4 +95,4 @@ class LoginUserView(APIView):
             "statusCode": status.HTTP_401_UNAUTHORIZED
         }, status=status.HTTP_401_UNAUTHORIZED)
 
-        return Response(serializer)
+
