@@ -13,6 +13,8 @@ pytest = "*"
 pytest-django = "*"
 drf-nested-routers = "*"
 model-bakery = "*"
+dj-database-url = "*"
+whitenoise = "*"
 
 [dev-packages]
 
