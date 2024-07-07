@@ -2,18 +2,18 @@
   "version": 2,
   "builds": [
     {
-      "src": "AuthOrg/wsgi.py",
+      "src": "AuthOrg/AuthOrg/wsgi.py",
       "use": "@vercel/python",
       "config": {
         "maxLambdaSize": "15mb",
-        "runtime": "python3.11"
+        "runtime": "python3.9"
       }
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "AuthOrg/wsgi.py"
+      "dest": "AuthOrg/AuthOrg/wsgi.py"
     },
     {
       "src": "/static/(.*)",
