@@ -21,7 +21,7 @@ class OrganisationSerializer(serializers.ModelSerializer):
         if errors:
             raise serializers.ValidationError(errors)
         return data
-    
+
     def create(self, validated_data):
         org = Organisation.objects.create(
             id = str(uuid4()),

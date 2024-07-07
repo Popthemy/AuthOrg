@@ -13,7 +13,7 @@ from .serializers import OrganisationSerializer,AddUserToOrganisationSerializer
 from .models import Organisation
 
 
-class AddUserToOrganisationViewSet(ViewSet):
+class AddRetrieveUserOrganisationViewSet(ViewSet):
     serializer_class = AddUserToOrganisationSerializer
 
     def create(self, request, organisation_pk=None):
@@ -47,24 +47,73 @@ class AddUserToOrganisationViewSet(ViewSet):
             "status": "success",
             "message": "User added to organisation successfully"
         }, status=status.HTTP_201_CREATED)
-
-# class AddUserToOrganisationViewSet(ModelViewSet):
-#     http_method_names = ['POST','HEAD','OPTIONS']
-#     serializer_class = AddUserToOrganisationSerializer
-
-#     def get_queryset(self):
-#         organisation_id = self.kwargs['organisation_pk']
-#         return User.objects.filter(organisations__org_id=organisation_id)
     
-#     def create(self, request, *args, **kwargs):
-#         serializer = self.get_serializer(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         organisation = serializer.save()
 
-#         return Response({
-#             "status": "success",
-#             "message": "User added to organisation successfully"
-#         }, status=status.HTTP_201_CREATED)
+    def retrieve(self, request, organisation_pk=None):
+        try:
+            organisation = Organisation.objects.get(pk=organisation_pk)
+        except Organisation.DoesNotExist:
+            return Response({
+                "status": "error",
+                "message": "Organisation not found"
+            }, status=status.HTTP_404_NOT_FOUND)
+
+        # Retrieve all users belonging to this organisation
+        users_in_organisation = organisation.user.all()
+
+        # Check if the requesting user belongs to this organisation
+        if not request.user in organisation.user.all():
+            return Response({
+                "status": "error",
+                "message": "You do not have permission to access this organisation"
+            }, status=status.HTTP_403_FORBIDDEN)
+
+        
+
+        # Serialize users and prepare response
+        users_serializer = UserSerializer(users_in_organisation, many=True)
+        
+        return Response({
+            "status": "success",
+            "message": "Users in organisation fetched successfully",
+            "data": {
+                "users_in_organisation": users_serializer.data
+            }
+        }, status=status.HTTP_200_OK)
+    
+    def list(self, request, organisation_pk=None):
+        try:
+            organisation = Organisation.objects.get(pk=organisation_pk)
+        except Organisation.DoesNotExist:
+            return Response({
+                "status": "error",
+                "message": "Organisation not found"
+            }, status=status.HTTP_404_NOT_FOUND)
+
+        # Retrieve all users belonging to this organisation
+        users_in_organisation = organisation.user.all()
+
+
+        # Check if the requesting user belongs to this organisation
+        if not request.user in users_in_organisation:
+            return Response({
+                "status": "error",
+                "message": "You do not have permission to access this organisation's users"
+            }, status=status.HTTP_403_FORBIDDEN)
+
+        
+        # Serialize users and prepare response
+        users_serializer = UserSerializer(users_in_organisation, many=True)
+        
+        return Response({
+            "status": "success",
+            "message": "Users in organisation fetched successfully",
+            "data": {
+                "users_in_organisation": users_serializer.data
+            }
+        }, status=status.HTTP_200_OK)
+    
+    
 
 
 
@@ -90,26 +139,38 @@ class OrganisationViewSet(ModelViewSet):
                 "organisations": serializer.data
             }
         }, status=status.HTTP_200_OK)
+    
 
-    def retreive(self, request, pk=None):
-        if pk:
-            if Organisation.objects.filter(pk=pk).filter(user=request.user).exists():
+    def retrieve(self, request, pk=None):
+         if pk:
+            org = Organisation.objects.filter(pk=pk)
+            if org.exists():
 
-                org = Organisation.objects.get(pk=pk)
-                print(org)
-                serializer = self.serializer_class(org)
+                if org.filter(user=request.user).exists():
 
-                return Response({
-                    "status": "success",
-                    "message": "Organisation fetched successfully",
-                    "data": serializer.data
-                }, status=status.HTTP_200_OK)
+                    org = Organisation.objects.get(pk=pk)
+                    
+                    serializer = self.serializer_class(org)
+
+                    return Response({
+                        "status": "success",
+                        "message": "Organisation fetched successfully",
+                        "data": serializer.data
+                    }, status=status.HTTP_200_OK)
+                
+                else:
+                    return Response({
+                        "status": "error",
+                        "message": "You do not have permission to access this organisation"
+                    }, status=status.HTTP_403_FORBIDDEN)
+                
 
             else:
                 return Response({
                     "status": "error",
-                    "message": "Organisation not found or you do not have permission to access this organisation"
+                    "message": "Organisation doesn't exist"
                 }, status=status.HTTP_404_NOT_FOUND)
+            
 
     def create(self, request, *args, **kwargs):
         serializer = self.serializer_class(
@@ -121,7 +182,7 @@ class OrganisationViewSet(ModelViewSet):
                             "status": "success",
                             "message": "Organisation created successfully",
                             "data":serializer.data
-                            }, status=status.HTTP_404_NOT_FOUND)
+                            }, status=status.HTTP_201_CREATED)
         
         return Response({
             "status": "Bad request",

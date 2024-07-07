@@ -12,6 +12,7 @@ djangorestframework-simplejwt = "*"
 pytest = "*"
 pytest-django = "*"
 drf-nested-routers = "*"
+model-bakery = "*"
 
 [dev-packages]
 

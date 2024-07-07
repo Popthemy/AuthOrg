@@ -7,7 +7,7 @@ router = routers.DefaultRouter()
 router.register('organisations',views.OrganisationViewSet,basename='organisation')
 
 organisation_router = routers.NestedDefaultRouter(router, 'organisations', lookup='organisation')
-organisation_router.register('users', views.AddUserToOrganisationViewSet, basename='organisation-users')
+organisation_router.register('users', views.AddRetrieveUserOrganisationViewSet, basename='organisation-users')
 
 
 urlpatterns = [

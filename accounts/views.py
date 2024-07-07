@@ -55,12 +55,13 @@ class RegisterUserView(APIView):
 
             return Response(response_data, status=status.HTTP_201_CREATED)
 
+        # If serializer is not valid, return validation errors with status code 422
         return Response({
-            "status": "Bad request",
+            "status": "Unprocessable Entity",
             "message": "Registration unsuccessful",
-            "statusCode": status.HTTP_400_BAD_REQUEST,
+            "statusCode": status.HTTP_422_UNPROCESSABLE_ENTITY,
             "errors": serializer.errors
-        }, status=status.HTTP_400_BAD_REQUEST)
+        }, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 
 class LoginUserView(APIView):

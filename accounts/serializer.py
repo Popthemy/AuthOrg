@@ -21,47 +21,42 @@ class RegisterUserSerializer(serializers.Serializer):
     last_name = serializers.CharField(max_length=255)
     email = serializers.EmailField()
     password = serializers.CharField(max_length=100, write_only=True)
-    phone = serializers.CharField(
-        max_length=15, allow_blank=True, required=False)
+    phone = serializers.CharField(max_length=15, allow_blank=True, required=False)
 
     def validate(self, data):
-
-        email = data.get('email')
-        password = data.get('password')
-
         errors = {}
+        
+        # Check each required field
         if not data.get('first_name'):
-            errors['first_name'] = [
-                {'field': 'first_name', 'message': 'First name is required'}]
+            errors['first_name'] = [{'field': 'first_name', 'message': 'First name is required.'}]
         if not data.get('last_name'):
-            errors['last_name'] = [
-                {'field': 'last_name', 'message': 'Last name is required'}]
-        if not email:
-            errors['email'] = [
-                {'field': 'email', 'message': 'Email is required'}]
-        if not password:
-            errors['password'] = [
-                {'field': 'password', 'message': 'Password is required'}]
-
+            errors['last_name'] = [{'field': 'last_name', 'message': 'Last name is required.'}]
+        if not data.get('email'):
+            errors['email'] = [{'field': 'email', 'message': 'Email is required.'}]
+        if not data.get('password'):
+            errors['password'] = [{'field': 'password', 'message': 'Password is required.'}]
+        
+        # Validate password strength
+        password = data.get('password')
         if password:
             try:
                 validate_password(password)
             except ValidationError as e:
-                errors['password'] = [
-                    {'field': 'password', 'message': f'str{e}'}]
-
-        if User.objects.filter(email=email).exists():
-            errors['email'] = [
-                {'field': 'email', 'message': 'This email is already registered'}]
-
+                errors['password'] = [{'field': 'password', 'message': str(e)}]
+        
+        # Check if email is already registered
+        email = data.get('email')
+        if email and User.objects.filter(email=email).exists():
+            errors['email'] = [{'field': 'email', 'message': 'This email is already registered.'}]
+        
+        # Raise validation errors if any
         if errors:
             raise serializers.ValidationError(errors)
+        
         return data
 
     def create(self, validated_data):
-        user = User.objects.create_user(
-            id=str(uuid4()), **validated_data
-        )
+        user = User.objects.create_user(id=str(uuid4()), **validated_data)
         return user
 
 
