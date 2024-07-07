@@ -6,7 +6,17 @@
       "use": "@vercel/python",
       "config": {
         "maxLambdaSize": "15mb",
-        "runtime": "python3.9"
+        "runtime": "python3.9",
+        "env": {
+          "DJANGO_SETTINGS_MODULE": "AuthOrg.settings.prod"
+        }
+      }
+    },
+    {
+      "src": "build_files.sh",  
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "staticfiles"
       }
     }
   ],
@@ -19,6 +29,5 @@
       "src": "/static/(.*)",
       "dest": "/static/$1"
     }
-  ],
-  "buildCommand": "sh build_files.sh"
+  ]
 }
