@@ -39,11 +39,10 @@ class RegisterUserView(APIView):
         if serializer.is_valid():
             user = serializer.save()
 
-            print(f'from register userview {user} ')
 
             refresh_token = get_jwt_token(user)
 
-            serializer = UserSerializer(User.objects.get(email=user.email))
+            serializer = UserSerializer(User.objects.get(email=user))
 
             response_data = {
                 "status": "success",
