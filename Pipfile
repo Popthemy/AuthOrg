@@ -15,6 +15,7 @@ drf-nested-routers = "*"
 model-bakery = "*"
 dj-database-url = "*"
 whitenoise = "*"
+waitress = "*"
 
 [dev-packages]
 

@@ -5,7 +5,7 @@ from .common import *
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
-ALLOWED_HOSTS = ['vercel.app',".now.sh"]
+ALLOWED_HOSTS = ['vercel.app',".now.sh",'leegreen.pythonanywhere.com']
 
 
 # Database
