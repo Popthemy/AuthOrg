@@ -12,14 +12,14 @@ ALLOWED_HOSTS = ['vercel.app',".now.sh"]
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 
-# for postgres offline
+# for postgres online
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'defaultdb',
-        'USER': 'avnadmin',
+        'USER': os.environ.get('DATABASE_USER'),
         'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-        'HOST': 'pg-leegreen-horluwatemilorunolamilekan-cb73.k.aivencloud.com',
+        'HOST': os.environ.get('DATABASE_HOST'),
         'PORT': '20755',
     }
 }

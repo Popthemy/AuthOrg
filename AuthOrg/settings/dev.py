@@ -10,7 +10,7 @@ DEBUG = True
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 
-# for postgres offline
+# for postgres
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',

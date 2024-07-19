@@ -11,8 +11,6 @@ from .models import User
 # Create your views here.
 
 
-
-
 def get_jwt_token(user):
     try:
         token = RefreshToken.for_user(user=user)
