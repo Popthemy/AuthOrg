@@ -19,6 +19,5 @@
       "dest": "/static/$1"
     }
   ],
-  "installCommand": "pip install -r requirements.txt",
-  "postInstallCommand": "python manage.py migrate"
+ 
 }

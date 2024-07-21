@@ -5,8 +5,7 @@ from .common import *
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
-ALLOWED_HOSTS = ['vercel.app',".now.sh",'leegreen.pythonanywhere.com']
-
+ALLOWED_HOSTS = ['localhost','127.0.0.1','.fly.dev']
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
