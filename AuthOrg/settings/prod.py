@@ -7,7 +7,7 @@ DEBUG = True
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','auth-org.vercel.app/']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','auth-biphrf4mc-leegreens-projects.vercel.app']
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
