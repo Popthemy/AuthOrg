@@ -2,6 +2,8 @@ import os
 from .common import *
 
 
+DEBUG = True
+
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
