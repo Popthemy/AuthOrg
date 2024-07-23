@@ -24,7 +24,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/AuthOrg/wsgi.py"
+      "dest": "AuthOrg/wsgi.py"
     }
   ]
 }
